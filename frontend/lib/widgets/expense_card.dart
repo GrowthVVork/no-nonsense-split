@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/expense.dart';
 
 class ExpenseCard extends StatelessWidget {
@@ -24,7 +25,7 @@ class ExpenseCard extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          '\$${expense.amount.toStringAsFixed(2)} - ${expense.date.toString()}',
+          '\$${expense.amount.toStringAsFixed(2)} - ${DateFormat('yyyy-MM-dd HH:mm:ss').format(expense.date)}',
           style: TextStyle(
             fontSize: 14,
             color: Colors.grey[600],
