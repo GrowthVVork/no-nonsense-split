@@ -15,7 +15,7 @@ class Expense {
     return Expense(
       id: json['id'],
       description: json['description'],
-      amount: json['amount'],
+      amount: json['amount'].toDouble(),
       date: DateTime.parse(json['date']),
     );
   }

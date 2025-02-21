@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.all(16),
               itemCount: expenses.length,
               itemBuilder: (context, index) {
-                return ExpenseCard(expense: expenses[index]);  // Correct usage
+                return ExpenseCard(expense: expenses[index]);
               },
             );
           }
