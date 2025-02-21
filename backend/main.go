@@ -48,10 +48,17 @@ func main() {
 	r.GET("/expenses", getExpenses)
 	r.PUT("/expenses/:id", editExpense) // New endpoint for editing expenses
 	r.DELETE("/expenses/:id", deleteExpense)
+	r.GET("/", welcome)
 
 	// Start the server
 	r.Run(":8080")
 }
+
+func welcome(c *gin.Context) {
+	welcomeMsg := map[string]string{"hello": "world"}
+	c.JSON(http.StatusOK, welcomeMsg)
+}
+
 
 // Add Expense
 func addExpense(c *gin.Context) {
