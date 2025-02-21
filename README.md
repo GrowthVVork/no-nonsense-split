@@ -27,6 +27,8 @@ No-Nonsense Split is a lightweight, offline-first finance tracking app designed 
 - **Gin**: A high-performance HTTP web framework for Go.
 - **SQLite**: A lightweight, file-based database for local storage.
 
+* Note : https://res.cloudinary.com/acloud-guru/image/fetch/c_thumb,f_auto,q_auto/https://acg-wordpress-content-production.s3.us-west-2.amazonaws.com/app/uploads/2020/06/tmux-3-1-1024x640.png
+
 ---
 
 ## Getting Started
