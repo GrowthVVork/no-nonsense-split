@@ -99,6 +99,11 @@ func getExpenses(c *gin.Context) {
 		expenses = append(expenses, expense)
 	}
 
+	// Return an empty list if no expenses are found
+	if expenses == nil {
+		expenses = []Expense{}
+	}
+
 	c.JSON(http.StatusOK, expenses)
 }
 
