@@ -14,6 +14,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final _descriptionController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
+  TimeOfDay _selectedTime = TimeOfDay.now();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -29,12 +30,30 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     }
   }
 
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+    );
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+      });
+    }
+  }
+
   Future<void> _submitExpense() async {
     if (_formKey.currentState!.validate()) {
       final expense = Expense(
         description: _descriptionController.text,
         amount: double.parse(_amountController.text),
-        date: _selectedDate,
+        date: DateTime(
+          _selectedDate.year,
+          _selectedDate.month,
+          _selectedDate.day,
+          _selectedTime.hour,
+          _selectedTime.minute,
+        ),
       );
 
       try {
@@ -111,6 +130,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 subtitle: Text(DateFormat('yyyy-MM-dd').format(_selectedDate)),
                 trailing: Icon(Icons.calendar_today),
                 onTap: () => _selectDate(context),
+              ),
+              ListTile(
+                title: Text('Time'),
+                subtitle: Text(_selectedTime.format(context)),
+                trailing: Icon(Icons.access_time),
+                onTap: () => _selectTime(context),
               ),
               SizedBox(height: 24),
               ElevatedButton(
