@@ -42,3 +42,50 @@ No-Nonsense Split is a lightweight, offline-first finance tracking app designed 
    ```bash
    git clone https://github.com/GrowthVVork/no-nonsense-split.git
    cd no-nonsense-split
+
+---
+
+## API Documentation
+
+* Root Endpoint (`GET /`)
+Returns a welcome message.
+```
+curl http://localhost:8080/
+```
+
+* Add an Expense (`POST /expenses`)
+Adds a new expense.
+```
+curl -X POST http://localhost:8080/expenses \
+-H "Content-Type: application/json" \
+-d '{
+  "description": "Groceries",
+  "amount": 50.75,
+  "date": "2023-10-15"
+}'
+```
+
+* Get All Expenses (`GET /expenses`)
+Retrieves all expenses.
+```
+curl http://localhost:8080/expenses
+```
+
+* Edit an Expense (`PUT /expenses/:id`)
+Updates an existing expense.
+```
+curl -X PUT http://localhost:8080/expenses/1 \
+-H "Content-Type: application/json" \
+-d '{
+  "description": "Updated Groceries",
+  "amount": 60.00,
+  "date": "2023-10-15"
+}'
+```
+
+*  Delete an Expense (`DELETE /expenses/:id`)
+Deletes an expense.
+```
+ curl -X DELETE http://localhost:8080/expenses/1
+ ```
+
