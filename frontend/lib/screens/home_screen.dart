@@ -22,23 +22,9 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.blue[800],
         elevation: 0,
       ),
-      body: FutureBuilder<List<Expense>>(
-        future: Provider.of<ExpenseService>(context, listen: false).getExpenses(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue[800]!),
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                'Error: ${snapshot.error}',
-                style: TextStyle(color: Colors.red),
-              ),
-            );
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      body: Consumer<ExpenseService>(
+        builder: (context, expenseService, child) {
+          if (expenseService.expenses.isEmpty) {
             return Center(
               child: Text(
                 'No expenses found.',
@@ -46,12 +32,11 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           } else {
-            final expenses = snapshot.data!;
             return ListView.builder(
               padding: EdgeInsets.all(16),
-              itemCount: expenses.length,
+              itemCount: expenseService.expenses.length,
               itemBuilder: (context, index) {
-                return ExpenseCard(expense: expenses[index]);
+                return ExpenseCard(expense: expenseService.expenses[index]);
               },
             );
           }
@@ -62,7 +47,10 @@ class HomeScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddExpenseScreen()),
-          );
+          ).then((_) {
+            // Refresh the list after returning from the Add Expense screen
+            Provider.of<ExpenseService>(context, listen: false).fetchExpenses();
+          });
         },
         child: Icon(Icons.add, color: Colors.white),
         backgroundColor: Colors.blue[800],

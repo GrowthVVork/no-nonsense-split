@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/expense.dart';
+import 'package:provider/provider.dart';
+import '../services/expense_service.dart';
 
 class ExpenseCard extends StatelessWidget {
   final Expense expense;
@@ -33,8 +35,14 @@ class ExpenseCard extends StatelessWidget {
         ),
         trailing: IconButton(
           icon: Icon(Icons.delete, color: Colors.red),
-          onPressed: () {
-            // Delete expense
+          onPressed: () async {
+            try {
+              await Provider.of<ExpenseService>(context, listen: false).deleteExpense(expense.id!);
+            } catch (error) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Failed to delete expense: $error')),
+              );
+            }
           },
         ),
       ),

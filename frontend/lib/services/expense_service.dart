@@ -1,23 +1,26 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import '../models/expense.dart';
 
 class ExpenseService extends ChangeNotifier {
   final String _baseUrl = 'http://localhost:8080';
+  List<Expense> _expenses = [];
 
-  Future<List<Expense>> getExpenses() async {
+  List<Expense> get expenses => _expenses;
+
+  Future<void> fetchExpenses() async {
     final response = await http.get(Uri.parse('$_baseUrl/expenses'));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      return data.map((json) => Expense.fromJson(json)).toList();
+      _expenses = data.map((json) => Expense.fromJson(json)).toList();
+      notifyListeners();
     } else {
       throw Exception('Failed to load expenses');
     }
   }
 
-  Future<Expense> addExpense(Expense expense) async {
+  Future<void> addExpense(Expense expense) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/expenses'),
       headers: <String, String>{
@@ -26,7 +29,7 @@ class ExpenseService extends ChangeNotifier {
       body: jsonEncode(expense.toJson()),
     );
     if (response.statusCode == 201) {
-      return Expense.fromJson(jsonDecode(response.body));
+      await fetchExpenses();
     } else {
       throw Exception('Failed to add expense');
     }
@@ -36,7 +39,9 @@ class ExpenseService extends ChangeNotifier {
     final response = await http.delete(
       Uri.parse('$_baseUrl/expenses/$id'),
     );
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200) {
+      await fetchExpenses();
+    } else {
       throw Exception('Failed to delete expense');
     }
   }
