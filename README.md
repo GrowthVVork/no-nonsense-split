@@ -1,6 +1,6 @@
 # No-Nonsense Split
 
-No-Nonsense Split is a lightweight, offline-first finance tracking app designed to simplify splitting expenses among friends or groups. It allows users to add, remove, and track expenses without the need for an account or internet connection.
+No-Nonsense Split is a lightweight, offline-first finance tracking app designed to simplify splitting expenses among friends or groups. It allows users to add, remove, and track expenses without the need for an account or internet connection. **Currently, only internet based availability because I am not paying for app publication or web-hosting.**
 
 ---
 
@@ -92,3 +92,4 @@ Deletes an expense.
  ```
 
 **Note** : Whatsapp Bot integration Reference https://developers.facebook.com/docs/whatsapp/cloud-api
+**Note** : Deployed @ render
