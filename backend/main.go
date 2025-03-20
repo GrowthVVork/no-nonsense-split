@@ -3,7 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
@@ -23,8 +25,7 @@ func main() {
 	var err error
 	db, err = sql.Open("sqlite3", "./expenses.db")
 	if err != nil {
-		fmt.Println("Failed to open database:", err)
-		return
+		log.Fatal("Failed to open database:", err)
 	}
 	defer db.Close()
 
@@ -36,8 +37,7 @@ func main() {
 		date TEXT
 	)`)
 	if err != nil {
-		fmt.Println("Failed to create table:", err)
-		return
+		log.Fatal("Failed to create table:", err)
 	}
 
 	// Initialize Gin router
@@ -46,19 +46,23 @@ func main() {
 	// Define API endpoints
 	r.POST("/expenses", addExpense)
 	r.GET("/expenses", getExpenses)
-	r.PUT("/expenses/:id", editExpense) // New endpoint for editing expenses
+	r.PUT("/expenses/:id", editExpense)
 	r.DELETE("/expenses/:id", deleteExpense)
 	r.GET("/", welcome)
 
-	// Start the server
-	r.Run(":8080")
+	// Use Render’s assigned port
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default for local development
+	}
+
+	log.Printf("Server starting on port %s...", port)
+	r.Run(":" + port)
 }
 
 func welcome(c *gin.Context) {
-	welcomeMsg := map[string]string{"hello": "world"}
-	c.JSON(http.StatusOK, welcomeMsg)
+	c.JSON(http.StatusOK, gin.H{"message": "Backend is running!"})
 }
-
 
 // Add Expense
 func addExpense(c *gin.Context) {
@@ -99,7 +103,6 @@ func getExpenses(c *gin.Context) {
 		expenses = append(expenses, expense)
 	}
 
-	// Return an empty list if no expenses are found
 	if expenses == nil {
 		expenses = []Expense{}
 	}
@@ -117,7 +120,6 @@ func editExpense(c *gin.Context) {
 		return
 	}
 
-	// Update the expense in the database
 	_, err := db.Exec("UPDATE expenses SET description = ?, amount = ?, date = ? WHERE id = ?",
 		expense.Description, expense.Amount, expense.Date, id)
 	if err != nil {
