@@ -2,11 +2,9 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
-
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 )
