@@ -92,4 +92,15 @@ Deletes an expense.
  ```
 
 **Note** : Whatsapp Bot integration Reference https://developers.facebook.com/docs/whatsapp/cloud-api
+
+**Note** : Telegram Integration check below curls :
+```
+url -X GET "https://api.curl -X GET "https://api.telegram.org/bot{BOT_TOKEN}/getWebhookInfo" 
+{"ok":true,"result":{"url":""}}
+
+
+curl -X POST "https://api.telegram.org/bot{BOT_TOKEN}/setWebhook" \
+     -H "Content-Type: application/json" \
+     --data '{"url": "RENDER/webhook"}'
+```
 **Note** : Deployed @ render
