@@ -4,6 +4,14 @@ No-Nonsense Split is a lightweight, offline-first finance tracking app designed 
 
 ---
 
+# Telegram Bot commands:
+- /get to get all expenses
+- /add <Note> <Amount> [Date] *Optional
+- /edit <id> <Note> <Amount> [Date] *Optional BUT BUGGY RN
+- /delete <id>
+
+---
+
 ## Features
 
 - **Add Expenses**: Easily input expenses with details like amount, description, and date.
